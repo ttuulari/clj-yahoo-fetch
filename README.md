@@ -13,10 +13,9 @@ A Clojure library designed to ... well, that part is up to you.
 ### Running the uberjar
 `java -jar ./target/portfolio-back-0.1.0-SNAPSHOT-standalone.jar`
 
-
 ## License
 
-Copyright © 2014 FIXME
+Copyright © 2014 Teemu Tuulari
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.

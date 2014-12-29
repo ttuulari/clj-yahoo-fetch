@@ -2,7 +2,8 @@
   (:require [clj-http.client :as client]
             [clj-time.core :as time]
             [clojure.set :as set]
-            [clojure-csv.core :as csv])
+            [clojure-csv.core :as csv]
+            [clojure.tools.cli :refer [parse-opts]])
   (:gen-class :main true))
 
 (def #^{:private true} +base-url+ "http://ichart.finance.yahoo.com/table.csv?s=%s&g=d&a=%d&b=%d&c=%d&d=%d&e=%d&f=%d")
@@ -32,12 +33,13 @@
   "Fetch historical prices from Yahoo! finance for the given symbols between start and end"
   [start end syms]
   (let [[y1 m1 d1]   (parse-date start)
-        [y2 m2 d2]   (parse-date end)]
-    (->> syms
-         (map (partial get-full-url y1 m1 d1 y2 m2 d2))
-         (map get-url)
-         (map :body)
-         (map csv/parse-csv))))
+        [y2 m2 d2]   (parse-date end)
+        xf           (comp
+                      (map (partial get-full-url y1 m1 d1 y2 m2 d2))
+                      (map get-url)
+                      (map :body)
+                      (map csv/parse-csv))]
+    (into [] xf syms)))
 
 (defn- csv->columns [csvdata]
   "Return CSV data columns"
@@ -79,9 +81,6 @@
          (map csv->values)
          (map seq-sel)
          (zipmap syms))))
-
-(fetch-fields "2014-05-01" "2014-06-01" ["GOOG" "AAPL"] ["Date" "Close"])
-
 
 (defn -main
   "The application's main function"
