@@ -11,4 +11,6 @@
                  [clojure-csv/clojure-csv "2.0.1"]]
   :main portfolio-back.core
   :aot [portfolio-back.core]
-  :profiles {:dev {:plugins [[lein-midje "3.1.1"]]}})
+  :profiles {:dev {:plugins [[lein-midje "3.1.1"]]}}
+  :plugins [[lein-bin "0.3.4"]]
+  :bin {:name "yahoo-fetch"})

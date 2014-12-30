@@ -82,7 +82,13 @@
          (map seq-sel)
          (zipmap syms))))
 
+(def cli-options
+  [[nil "--cols" "Output columns"
+    :parse-fn #(.split % ",")
+    :default "Date"]])
+
 (defn -main
   "The application's main function"
   [& args]
-  (println (fetch-fields "2014-05-01" "2014-06-01" ["GOOG" "AAPL"] ["Date" "Close"])))
+  (let [[start-d end-d cols & syms] args]
+    (println (fetch-fields start-d end-d syms (.split cols ",")))))
